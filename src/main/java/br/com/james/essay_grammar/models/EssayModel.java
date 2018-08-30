@@ -24,10 +24,11 @@ public abstract class EssayModel {
 	private String titulo;
 	private String arquivo;
 	private float nota_final;
-	private HashMap notas = new HashMap();
-	private HashMap features = new HashMap();
+	private HashMap<String, String> notas = new HashMap<String, String>();
+	private HashMap<String, String> features = new HashMap<String, String>();
+	private StringBuilder featureCSVFormat = new StringBuilder();
 
-	public EssayModel(String texto, String titulo, String arquivo, HashMap notas, float nota_final,
+	public EssayModel(String texto, String titulo, String arquivo, HashMap<String, String> notas, float nota_final,
 			String identificador) {
 		super();
 		this.texto = texto;
@@ -97,11 +98,11 @@ public abstract class EssayModel {
 		this.arquivo = arquivo;
 	}
 
-	public HashMap getNotas() {
+	public HashMap<String, String> getNotas() {
 		return notas;
 	}
 
-	public void setNotas(HashMap notas) {
+	public void setNotas(HashMap<String, String> notas) {
 		this.notas = notas;
 	}
 
@@ -117,7 +118,7 @@ public abstract class EssayModel {
 		return identificador;
 	}
 
-	public HashMap getFeatures() {
+	public HashMap<String, String> getFeatures() {
 		return features;
 	}
 
@@ -129,12 +130,13 @@ public abstract class EssayModel {
 		this.identificador = identificador;
 	}
 
-	public void addNotas(String descricao, float nota) {
-		this.notas.put(descricao, notas);
+	public void addNotas(String descricao, String nota) {
+		this.notas.put(descricao, nota);
 	}
 
 	public EssayModel addFeatures(String chave, String valor) {
 		this.features.put(chave, valor);
+		this.featureCSVFormat.append(valor).append(", ");
 		return this;
 	}
 
@@ -148,6 +150,10 @@ public abstract class EssayModel {
 	public String toString() {
 		return "EssayModel [identificador=" + identificador + ", titulo=" + titulo + ", arquivo=" + arquivo
 				+ ", nota_final=" + nota_final + ", notas=" + notas + ", features=" + features + "]";
+	}
+
+	public String featuresCSV() {
+		return this.featureCSVFormat.toString();
 	}
 
 }

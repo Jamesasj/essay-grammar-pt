@@ -10,12 +10,16 @@ public class App {
 	public static void main(String[] args) {
 
 		String[] arquivo = { "/home/james/Documents/texto.txt", "/home/james/Documents/texto2.txt" };
+		IOFileModel fileIO = new LeitorConcreto();
 
+		fileIO.abrirArquivo("saida.csv");
 		for (int i = 0; i < arquivo.length; i++) {
-			IOFileModel leitor = new LeitorConcreto();
-			EssayModel redacao = leitor.readEssay(arquivo[i]);
+			EssayModel redacao = fileIO.readEssay(arquivo[i]);
 			ANALISADOR.analisarRedacao(redacao);
-			System.out.println(redacao);
+			fileIO.adicionarLinha(redacao.featuresCSV());
 		}
+		fileIO.fecharArquivo();
+		
+		System.out.println("concluido");
 	}
 }

@@ -55,7 +55,7 @@ public class Analisador {
 
 		redacao.addFeatures("TotalErros", Integer.toString(this.getTotalErros()))
 				.addFeatures("M.Erro", Float.toString(this.getErroToken()))
-				.addFeatures("T.Tokens", Integer.toString(this.getTotalTokens())).addFeatures("FlashScore", "NA")
+				.addFeatures("T.Tokens", Integer.toString(this.getTotalTokens()))//.addFeatures("FlashScore", "NA")
 				.addFeatures("M.Palavras", Float.toString(this.getLetrasToken()))
 				.addFeatures("T.Correcoes", Integer.toString(this.getTotalCorrecao()))
 				.addFeatures("M.Correcoes", Float.toString(this.getCorrecaoToken()))
