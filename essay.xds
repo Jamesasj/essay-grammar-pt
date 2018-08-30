@@ -1,0 +1,66 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="prompts">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="prompt" maxOccurs="unbounded" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:string" name="name"/>
+              <xs:element type="xs:string" name="url"/>
+              <xs:element type="xs:string" name="date"/>
+              <xs:element type="xs:string" name="description"/>
+              <xs:element type="xs:string" name="info"/>
+              <xs:element name="essays">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="essay" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="title"/>
+                          <xs:element type="xs:string" name="url"/>
+                          <xs:element type="xs:string" name="score"/>
+                          <xs:element type="xs:string" name="original"/>
+                          <xs:element type="xs:string" name="fixed"/>
+                          <xs:element type="xs:string" name="review"/>
+                          <xs:element type="xs:string" name="comments"/>
+                          <xs:element name="errors">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="error" maxOccurs="unbounded" minOccurs="0">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element type="xs:string" name="wrong"/>
+                                      <xs:element type="xs:string" name="right"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="criteria">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="criterion" maxOccurs="unbounded" minOccurs="0">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element type="xs:string" name="name"/>
+                                      <xs:element type="xs:string" name="score"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
