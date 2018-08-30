@@ -9,23 +9,13 @@ public class App {
 
 	public static void main(String[] args) {
 
-		String arquivo = "/home/james/Documents/texto2.txt";
+		String[] arquivo = { "/home/james/Documents/texto.txt", "/home/james/Documents/texto2.txt" };
 
-		IOFileModel leitor = new LeitorConcreto();
-
-		EssayModel redacao = leitor.readEssay(arquivo);
-
-		ANALISADOR.analisarRedacao(redacao);
-
-		System.out.println(ANALISADOR.getTotalTokens());
-		System.out.println(redacao);
-		arquivo = "/home/james/Documents/texto2.txt";
-
-		EssayModel redacao2 = leitor.readEssay(arquivo);
-
-		ANALISADOR.analisarRedacao(redacao2);
-
-		System.out.println(ANALISADOR.getTotalTokens());
-
+		for (int i = 0; i < arquivo.length; i++) {
+			IOFileModel leitor = new LeitorConcreto();
+			EssayModel redacao = leitor.readEssay(arquivo[i]);
+			ANALISADOR.analisarRedacao(redacao);
+			System.out.println(redacao);
+		}
 	}
 }

@@ -11,6 +11,9 @@ import org.cogroo.checker.GrammarChecker;
 import org.cogroo.text.Sentence;
 import org.cogroo.text.Token;
 
+import com.giullianomorroni.jcorretor.CorretorOrtografico;
+import com.giullianomorroni.jcorretor.SugestaoOrtografia;
+
 import br.com.james.essay_grammar.models.EssayModel;
 
 public class Analisador {
@@ -21,10 +24,13 @@ public class Analisador {
 	private int nTokens;
 	private int totalLetras;
 	private int sentencaGrande;
+	private CorretorOrtografico corretorOrtografico;
+	private List<String> lCorrecao;
 
 	public Analisador() {
 		this.factory = ComponentFactory.create(new Locale("pt", "BR"));
 		this.cogroo = factory.createPipe();
+
 		try {
 			this.corretorGramatical = new GrammarChecker(cogroo);
 		} catch (IllegalArgumentException e) {
@@ -32,6 +38,8 @@ public class Analisador {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+		corretorOrtografico = new CorretorOrtografico();
 	}
 
 	public void analisarRedacao(EssayModel redacao) {
@@ -39,9 +47,20 @@ public class Analisador {
 		this.totalLetras = 0;
 		this.sentencaGrande = 0;
 		this.documento = new CheckDocument(redacao.getTexto());
-		this.corretorGramatical.analyze(documento); // analise gramatical porto crítico
+		this.corretorGramatical.analyze(documento); // ponto crítico
+
+		lCorrecao = this.corretorOrtografico.corrigir(redacao.getTexto()).getTextoSugerido();
+
 		analisar();
-		redacao.addFeatures("TotalErros", Integer.toString(this.getTotalErros()));
+
+		redacao.addFeatures("TotalErros", Integer.toString(this.getTotalErros()))
+				.addFeatures("M.Erro", Float.toString(this.getErroToken()))
+				.addFeatures("T.Tokens", Integer.toString(this.getTotalTokens())).addFeatures("FlashScore", "NA")
+				.addFeatures("M.Palavras", Float.toString(this.getLetrasToken()))
+				.addFeatures("T.Correcoes", Integer.toString(this.getTotalCorrecao()))
+				.addFeatures("M.Correcoes", Float.toString(this.getCorrecaoToken()))
+				.addFeatures("SentencaGrande", Integer.toString(this.getSentencasGrandes()));
+
 	}
 
 	private void analisar() {
@@ -73,6 +92,18 @@ public class Analisador {
 
 	public int getSentencasGrandes() {
 		return this.sentencaGrande;
+	}
+
+	public int getTotalCorrecao() {
+		return this.lCorrecao.size();
+	}
+
+	public float getCorrecaoToken() {
+		return this.getTotalCorrecao() / this.getTotalTokens();
+	}
+
+	public float getLetrasToken() {
+		return this.totalLetras / this.getTotalTokens();
 	}
 
 }

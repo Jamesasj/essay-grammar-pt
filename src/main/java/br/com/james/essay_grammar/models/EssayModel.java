@@ -133,8 +133,9 @@ public abstract class EssayModel {
 		this.notas.put(descricao, notas);
 	}
 
-	public void addFeatures(String chave, String valor) {
+	public EssayModel addFeatures(String chave, String valor) {
 		this.features.put(chave, valor);
+		return this;
 	}
 
 	public String getFeature() {
@@ -145,8 +146,8 @@ public abstract class EssayModel {
 
 	@Override
 	public String toString() {
-		return "EssayModel [identificador=" + identificador + ", texto=" + texto + ", titulo=" + titulo + ", arquivo="
-				+ arquivo + ", nota_final=" + nota_final + ", notas=" + notas + ", features=" + features + "]";
+		return "EssayModel [identificador=" + identificador + ", titulo=" + titulo + ", arquivo=" + arquivo
+				+ ", nota_final=" + nota_final + ", notas=" + notas + ", features=" + features + "]";
 	}
 
 }
