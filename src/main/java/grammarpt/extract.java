@@ -37,6 +37,7 @@ public class extract {
 
 		// pq o tempo de extracao de features vai aumentando até voltar a diminuir?
 		// o que esta levando tanto tempo?
+		
 		/*
 		 * James : a instancia execiva das classes no cogroo na classe Essay pode estar
 		 * ocupando a memória execiva em uma lista. Talvez uma instancia estatica reduza

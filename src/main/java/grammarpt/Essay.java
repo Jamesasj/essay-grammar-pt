@@ -43,14 +43,6 @@ public class Essay {
 		UNDERSTANDING, SELECTINGINFO, SHOWKNOW, SOLUTION, FORMAL
 	}
 
-	String getfileName() {
-		return fileName;
-	}
-
-	List<String> get_ftrsNames() {
-		return ftrsNames;
-	}
-
 	Essay(File f) throws SAXException, IOException {
 		DocumentBuilderFactory docFac = DocumentBuilderFactory.newInstance();
 		factory = ComponentFactory.create(new Locale("pt", "BR"));
@@ -62,7 +54,7 @@ public class Essay {
 			Document document = docBuilder.parse(f);
 			NodeList body = document.getElementsByTagName("body").item(0).getChildNodes();
 			String bodyText = "";
-			
+
 			for (int k = 0; k < body.getLength(); k++) {
 				String tagName = body.item(k).getNodeName();
 				String textContent = body.item(k).getTextContent().trim();
@@ -160,6 +152,7 @@ public class Essay {
 		int ntokens = 0;
 		int wordlenghtSum = 0;
 		float avgsyll = 0;
+
 		List<Sentence> lstSentence = doc.getSentences();
 		for (Sentence s : lstSentence) {
 			List<Token> lstTokens = s.getTokens();
@@ -254,6 +247,14 @@ public class Essay {
 		}
 
 		out.println(ftrs);
+	}
+
+	String getfileName() {
+		return fileName;
+	}
+
+	List<String> get_ftrsNames() {
+		return ftrsNames;
 	}
 
 }
