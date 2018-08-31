@@ -67,7 +67,6 @@ public class Essay {
 			this.bodyText = bodyText;
 			String finalgrade = document.getElementsByTagName("finalgrade").item(0).getTextContent();
 			this.finalGrade = Float.parseFloat(finalgrade.replace(',', '.'));
-
 			NodeList skillList = document.getElementsByTagName("skills").item(0).getChildNodes();
 			for (int k = 0; k < skillList.getLength(); k++) {
 				Node nameFirst = skillList.item(k).getFirstChild();
@@ -96,10 +95,8 @@ public class Essay {
 				}
 
 			}
-
 			this.generalComment = document.getElementsByTagName("generalcomment").item(0).getTextContent();
 			this.specificComments = document.getElementsByTagName("specificaspects").item(0).getTextContent();
-
 		} catch (ParserConfigurationException e) {
 			e.printStackTrace();
 		}
@@ -107,15 +104,12 @@ public class Essay {
 
 	public int numSyllable(List<Token> lstTokens) {
 		int nSyllable = 0;
-
 		for (Token t : lstTokens) {
 			String[] lsttokens = t.getLexeme().split("_");
 			for (String w : lsttokens) {
-
 				ArrayList<String> s = toolObj.word2syllables(w);
 				nSyllable = nSyllable + s.size();
 			}
-
 		}
 		return nSyllable;
 	}

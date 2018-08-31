@@ -1,20 +1,18 @@
 package br.com.james.essay_grammar;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
 import org.cogroo.analyzer.Analyzer;
 import org.cogroo.analyzer.ComponentFactory;
 import org.cogroo.checker.CheckDocument;
 import org.cogroo.checker.GrammarChecker;
 import org.cogroo.text.Sentence;
 import org.cogroo.text.Token;
-
 import com.giullianomorroni.jcorretor.CorretorOrtografico;
-import com.giullianomorroni.jcorretor.SugestaoOrtografia;
-
 import br.com.james.essay_grammar.models.EssayModel;
+import grammarpt.tools;
 
 public class Analisador {
 	private ComponentFactory factory;
@@ -26,8 +24,10 @@ public class Analisador {
 	private int sentencaGrande;
 	private CorretorOrtografico corretorOrtografico;
 	private List<String> lCorrecao;
+	private tools AnalisadorSilaba = new tools();
 	private String[] lCabecalho = { "TotalErros", "M.Erro", "T.Tokens", "FlashScore", "M.Palavras", "T.Correcoes",
 			"M.Correcoes", "SentencaGrande" };
+	private float mediaSilabas;
 
 	public Analisador() {
 		this.factory = ComponentFactory.create(new Locale("pt", "BR"));
@@ -47,32 +47,51 @@ public class Analisador {
 		this.totalLetras = 0;
 		this.sentencaGrande = 0;
 		this.documento = new CheckDocument(redacao.getTexto());
-		this.corretorGramatical.analyze(documento); // ponto crítico
+		this.corretorGramatical.analyze(documento); // ponto crítico TODO: alterar o analyze do corretor gramatical para armazenar a analise do discurso.
 		lCorrecao = this.corretorOrtografico.corrigir(redacao.getTexto()).getTextoSugerido();
 		analisar();
 		redacao.addFeatures(this.lCabecalho[0], Integer.toString(this.getTotalErros()))
 				.addFeatures(this.lCabecalho[1], Float.toString(this.getErroToken()))
 				.addFeatures(this.lCabecalho[2], Integer.toString(this.getTotalTokens()))
-				.addFeatures(this.lCabecalho[3], "NA")
+				.addFeatures(this.lCabecalho[3], Double.toString(this.getFlashScore()))
 				.addFeatures(this.lCabecalho[4], Float.toString(this.getLetrasToken()))
 				.addFeatures(this.lCabecalho[5], Integer.toString(this.getTotalCorrecao()))
 				.addFeatures(this.lCabecalho[6], Float.toString(this.getCorrecaoToken()))
 				.addFeatures(this.lCabecalho[7], Integer.toString(this.getSentencasGrandes()));
 	}
 
+	private double getFlashScore() {
+		this.mediaSilabas /= this.getTotalTokens();
+		double mediatokenSentenca = this.documento.getSentences().size() / this.getTotalTokens();
+		return 206.835 - (84.6 * this.mediaSilabas) - (1.015 * mediatokenSentenca) + 42;
+	}
+
 	private void analisar() {
 		List<Sentence> lSentencas = this.documento.getSentences();
 		for (Sentence sentenca : lSentencas) {
 			List<Token> lTokens = sentenca.getTokens();
-			this.nTokens = this.nTokens + lTokens.size();
+			this.mediaSilabas += this.totalSilabas(lTokens);
+			this.nTokens += lTokens.size();
 			for (Token token : lTokens) {
-				totalLetras = totalLetras + token.toString().length();
+				totalLetras += token.toString().length();
 			}
 			int tamanhoSentenca = sentenca.getText().length();
 			if (tamanhoSentenca > 70) {
 				sentencaGrande++;
 			}
 		}
+	}
+
+	private int totalSilabas(List<Token> lTokens) {
+		int nSilabas = 0;
+		for (Token token : lTokens) {
+			String[] lLexemas = token.getLexeme().split("_");
+			for (String lexema : lLexemas) {
+				ArrayList<String> lSilabas = AnalisadorSilaba.word2syllables(lexema);
+				nSilabas += lSilabas.size();
+			}
+		}
+		return nSilabas;
 	}
 
 	public int getTotalErros() {
