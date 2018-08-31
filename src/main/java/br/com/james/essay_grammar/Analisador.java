@@ -50,6 +50,7 @@ public class Analisador {
 		this.corretorGramatical.analyze(documento); // ponto crítico TODO: alterar o analyze do corretor gramatical para armazenar a analise do discurso.
 		lCorrecao = this.corretorOrtografico.corrigir(redacao.getTexto()).getTextoSugerido();
 		analisar();
+		
 		redacao.addFeatures(this.lCabecalho[0], Integer.toString(this.getTotalErros()))
 				.addFeatures(this.lCabecalho[1], Float.toString(this.getErroToken()))
 				.addFeatures(this.lCabecalho[2], Integer.toString(this.getTotalTokens()))
@@ -72,13 +73,18 @@ public class Analisador {
 			List<Token> lTokens = sentenca.getTokens();
 			this.mediaSilabas += this.totalSilabas(lTokens);
 			this.nTokens += lTokens.size();
-			for (Token token : lTokens) {
-				totalLetras += token.toString().length();
-			}
+			this.analisarTokens(lTokens);
 			int tamanhoSentenca = sentenca.getText().length();
+			
 			if (tamanhoSentenca > 70) {
 				sentencaGrande++;
 			}
+		}
+	}
+
+	private void analisarTokens(List<Token> lTokens) {
+		for (Token token : lTokens) {
+			this.totalLetras += token.toString().length();
 		}
 	}
 
