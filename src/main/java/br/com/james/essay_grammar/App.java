@@ -9,17 +9,19 @@ public class App {
 
 	public static void main(String[] args) {
 
-		String[] arquivo = { "/home/james/Documents/texto.txt", "/home/james/Documents/texto2.txt" };
+		String[] arquivo = { "texto.txt" };
 		IOFileModel fileIO = new LeitorConcreto();
 
 		fileIO.abrirArquivo("saida.csv");
+
+		fileIO.adicionarLinha(ANALISADOR.getCabecalho());
 		for (int i = 0; i < arquivo.length; i++) {
 			EssayModel redacao = fileIO.readEssay(arquivo[i]);
 			ANALISADOR.analisarRedacao(redacao);
 			fileIO.adicionarLinha(redacao.featuresCSV());
 		}
 		fileIO.fecharArquivo();
-		
+
 		System.out.println("concluido");
 	}
 }

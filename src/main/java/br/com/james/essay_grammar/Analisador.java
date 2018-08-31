@@ -26,11 +26,12 @@ public class Analisador {
 	private int sentencaGrande;
 	private CorretorOrtografico corretorOrtografico;
 	private List<String> lCorrecao;
+	private String[] lCabecalho = { "TotalErros", "M.Erro", "T.Tokens", "FlashScore", "M.Palavras", "T.Correcoes",
+			"M.Correcoes", "SentencaGrande" };
 
 	public Analisador() {
 		this.factory = ComponentFactory.create(new Locale("pt", "BR"));
 		this.cogroo = factory.createPipe();
-
 		try {
 			this.corretorGramatical = new GrammarChecker(cogroo);
 		} catch (IllegalArgumentException e) {
@@ -38,7 +39,6 @@ public class Analisador {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 		corretorOrtografico = new CorretorOrtografico();
 	}
 
@@ -48,19 +48,16 @@ public class Analisador {
 		this.sentencaGrande = 0;
 		this.documento = new CheckDocument(redacao.getTexto());
 		this.corretorGramatical.analyze(documento); // ponto crítico
-
 		lCorrecao = this.corretorOrtografico.corrigir(redacao.getTexto()).getTextoSugerido();
-
 		analisar();
-
-		redacao.addFeatures("TotalErros", Integer.toString(this.getTotalErros()))
-				.addFeatures("M.Erro", Float.toString(this.getErroToken()))
-				.addFeatures("T.Tokens", Integer.toString(this.getTotalTokens()))//.addFeatures("FlashScore", "NA")
-				.addFeatures("M.Palavras", Float.toString(this.getLetrasToken()))
-				.addFeatures("T.Correcoes", Integer.toString(this.getTotalCorrecao()))
-				.addFeatures("M.Correcoes", Float.toString(this.getCorrecaoToken()))
-				.addFeatures("SentencaGrande", Integer.toString(this.getSentencasGrandes()));
-
+		redacao.addFeatures(this.lCabecalho[0], Integer.toString(this.getTotalErros()))
+				.addFeatures(this.lCabecalho[1], Float.toString(this.getErroToken()))
+				.addFeatures(this.lCabecalho[2], Integer.toString(this.getTotalTokens()))
+				.addFeatures(this.lCabecalho[3], "NA")
+				.addFeatures(this.lCabecalho[4], Float.toString(this.getLetrasToken()))
+				.addFeatures(this.lCabecalho[5], Integer.toString(this.getTotalCorrecao()))
+				.addFeatures(this.lCabecalho[6], Float.toString(this.getCorrecaoToken()))
+				.addFeatures(this.lCabecalho[7], Integer.toString(this.getSentencasGrandes()));
 	}
 
 	private void analisar() {
@@ -104,6 +101,15 @@ public class Analisador {
 
 	public float getLetrasToken() {
 		return this.totalLetras / this.getTotalTokens();
+	}
+
+	public String getCabecalho() {
+		StringBuilder retorno = new StringBuilder();
+		for (int i = 0; i < lCabecalho.length; i++) {
+			retorno.append(this.lCabecalho[i]).append(", ");
+		}
+		return retorno.toString();
+
 	}
 
 }
