@@ -75,9 +75,8 @@ public class Analisador {
 			this.nTokens += lTokens.size();
 			this.analisarTokens(lTokens);
 			int tamanhoSentenca = sentenca.getText().length();
-			
 			if (tamanhoSentenca > 70) {
-				sentencaGrande++;
+				this.sentencaGrande ++;
 			}
 		}
 	}
@@ -85,6 +84,7 @@ public class Analisador {
 	private void analisarTokens(List<Token> lTokens) {
 		for (Token token : lTokens) {
 			this.totalLetras += token.toString().length();
+			
 		}
 	}
 
