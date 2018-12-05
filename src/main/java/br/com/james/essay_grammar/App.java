@@ -16,8 +16,6 @@ public class App {
 
 	public static void main(String[] args) {
 
-		//String[] arquivo = { "dataset/texto0.txt", "dataset/texto1.txt", "dataset/texto2.txt","dataset/texto3.txt" };
-		
 		List<String> lsArquivos = lerArquivo("list_dataset.txt");
 		
 		IOFileModel fileIO = new LeitorConcreto();
