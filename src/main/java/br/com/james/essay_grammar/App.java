@@ -15,26 +15,18 @@ public class App {
 	static Analisador ANALISADOR = new Analisador();
 
 	public static void main(String[] args) {
-
-		//String[] arquivo = { "dataset/texto0.txt", "dataset/texto1.txt", "dataset/texto2.txt","dataset/texto3.txt" };
-		
-		List<String> lsArquivos = lerArquivo("list_dataset.txt");
-		
+		List<String> lsArquivos = lerArquivo(args[0]);
 		IOFileModel fileIO = new LeitorConcreto();
-
-		fileIO.abrirArquivo("saida.csv");
-
-		fileIO.adicionarLinha(ANALISADOR.getCabecalho());
+		fileIO.abrirArquivo(args[1]);
 		
+		fileIO.adicionarLinha(ANALISADOR.getCabecalho());
 		for (String arquivo : lsArquivos) {
 			EssayModel redacao = fileIO.readEssay(arquivo);
 			ANALISADOR.analisarRedacao(redacao);
 			System.out.println(redacao.featuresCSV());
 			fileIO.adicionarLinha(redacao.featuresCSV());
 		}
-		
 		fileIO.fecharArquivo();
-
 		System.out.println("concluido");
 	}
 

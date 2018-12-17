@@ -2,6 +2,7 @@ package br.com.james.essay_grammar;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import org.cogroo.analyzer.Analyzer;
@@ -31,6 +32,7 @@ public class Analisador {
 
 	public Analisador() {
 		this.factory = ComponentFactory.create(new Locale("pt", "BR"));
+		
 		this.cogroo = factory.createPipe();
 		try {
 			this.corretorGramatical = new GrammarChecker(cogroo);
@@ -46,19 +48,32 @@ public class Analisador {
 		this.nTokens = 0;
 		this.totalLetras = 0;
 		this.sentencaGrande = 0;
-		this.documento = new CheckDocument(redacao.getTexto());
-		this.corretorGramatical.analyze(documento); // ponto crítico TODO: alterar o analyze do corretor gramatical para armazenar a analise do discurso.
-		lCorrecao = this.corretorOrtografico.corrigir(redacao.getTexto()).getTextoSugerido();
-		analisar();
+		try {
+			this.documento = new CheckDocument(redacao.getTexto());
+			this.corretorGramatical.analyze(documento); // ponto crítico TODO: alterar o analyze do corretor gramatical para
+														// armazenar a analise do discurso.
+			lCorrecao = this.corretorOrtografico.corrigir(redacao.getTexto()).getTextoSugerido();
+			analisar();
+
+			redacao.addFeatures(this.lCabecalho[0], Integer.toString(this.getTotalErros()))
+					.addFeatures(this.lCabecalho[1], Float.toString(this.getErroToken()))
+					.addFeatures(this.lCabecalho[2], Integer.toString(this.getTotalTokens()))
+					.addFeatures(this.lCabecalho[3], Double.toString(this.getFlashScore()))
+					.addFeatures(this.lCabecalho[4], Float.toString(this.getLetrasToken()))
+					.addFeatures(this.lCabecalho[5], Integer.toString(this.getTotalCorrecao()))
+					.addFeatures(this.lCabecalho[6], Float.toString(this.getCorrecaoToken()))
+					.addFeatures(this.lCabecalho[7], Integer.toString(this.getSentencasGrandes()));
+		} catch (Exception e) {
+			redacao.addFeatures(this.lCabecalho[0], Integer.toString(-1))
+			.addFeatures(this.lCabecalho[1], Float.toString(-1))
+			.addFeatures(this.lCabecalho[2], Integer.toString(-1))
+			.addFeatures(this.lCabecalho[3], Double.toString(-1))
+			.addFeatures(this.lCabecalho[4], Float.toString(-1))
+			.addFeatures(this.lCabecalho[5], Integer.toString(-1))
+			.addFeatures(this.lCabecalho[6], Float.toString(-1))
+			.addFeatures(this.lCabecalho[7], Integer.toString(-1));
+		}
 		
-		redacao.addFeatures(this.lCabecalho[0], Integer.toString(this.getTotalErros()))
-				.addFeatures(this.lCabecalho[1], Float.toString(this.getErroToken()))
-				.addFeatures(this.lCabecalho[2], Integer.toString(this.getTotalTokens()))
-				.addFeatures(this.lCabecalho[3], Double.toString(this.getFlashScore()))
-				.addFeatures(this.lCabecalho[4], Float.toString(this.getLetrasToken()))
-				.addFeatures(this.lCabecalho[5], Integer.toString(this.getTotalCorrecao()))
-				.addFeatures(this.lCabecalho[6], Float.toString(this.getCorrecaoToken()))
-				.addFeatures(this.lCabecalho[7], Integer.toString(this.getSentencasGrandes()));
 	}
 
 	private double getFlashScore() {
@@ -76,7 +91,7 @@ public class Analisador {
 			this.analisarTokens(lTokens);
 			int tamanhoSentenca = sentenca.getText().length();
 			if (tamanhoSentenca > 70) {
-				this.sentencaGrande ++;
+				this.sentencaGrande++;
 			}
 		}
 	}
@@ -84,6 +99,16 @@ public class Analisador {
 	private void analisarTokens(List<Token> lTokens) {
 		for (Token token : lTokens) {
 			this.totalLetras += token.toString().length();
+			
+			
+			
+			//if (token.getPOSTag().contain("v") && token.getFeatures("pron-pers")
+		//	String lexeme = token.getLexeme();
+		//	String lemmas = Arrays.toString(token.getLemmas());
+		//	String pos = token.getPOSTag();
+		//	String feat = token.getFeatures();
+
+		//	System.out.printf("lexeme: %s \t lemmas: %s \t pos: %s \t feat: %s \n", lexeme, lemmas, pos, feat);
 			
 		}
 	}
