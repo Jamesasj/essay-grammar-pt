@@ -1,4 +1,0 @@
-dataset\texto0.txt
-dataset\texto1.txt
-dataset\texto2.txt
-dataset\texto3.txt
