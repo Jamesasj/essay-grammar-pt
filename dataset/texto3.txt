@@ -16,4 +16,8 @@ Sendo assim, a percepção da importância da ciência e tecnologia na vida das 
 
 Deveríamos, portanto, explorar as potencialidades latentes da aplicação e benefícios imediatos da ciência e tecnologia na vida das pessoas, levando-as a amplificar sensivelmente sua parcela de contribuição com a humanidade e então intensificar o processo contínuo de evolução.
 
+<<<<<<< HEAD
 Ele não deu uma trégua, Eles. E eu me fortalecerei, levantar-me-ei.
+=======
+texto evolutivo
+>>>>>>> branch 'master' of https://github.com/Jamesasj/essay-grammar-pt.git

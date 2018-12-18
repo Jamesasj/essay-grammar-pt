@@ -18,7 +18,7 @@ public class App {
 		List<String> lsArquivos = lerArquivo(args[0]);
 		IOFileModel fileIO = new LeitorConcreto();
 		fileIO.abrirArquivo(args[1]);
-		
+
 		fileIO.adicionarLinha(ANALISADOR.getCabecalho());
 		for (String arquivo : lsArquivos) {
 			EssayModel redacao = fileIO.readEssay(arquivo);
@@ -36,12 +36,12 @@ public class App {
 		try {
 			br = new BufferedReader(new FileReader(caminho));
 			String linha;
-			while((linha = br.readLine())!= null) {
+			while ((linha = br.readLine()) != null) {
 				stList.add(linha);
 			}
 			br.close();
 			return stList;
-		
+
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
